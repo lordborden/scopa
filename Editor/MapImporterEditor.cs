@@ -37,7 +37,11 @@ namespace Scopa.Editor {
                 AssetDatabase.SaveAssets();
                 AssetDatabase.Refresh();
                 EditorUtility.FocusProjectWindow ();
+#if UNITY_6000_5_OR_NEWER
+                externalConfig.objectReferenceEntityIdValue = configAsset.GetEntityId();
+#else
                 externalConfig.objectReferenceInstanceIDValue = configAsset.GetInstanceID();
+#endif
                 Selection.activeObject = configAsset;
             }
 
