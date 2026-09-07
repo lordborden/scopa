@@ -16,11 +16,15 @@ namespace Scopa {
     public class GenericDictionary<TKey, TValue> : IDictionary<TKey, TValue>, ISerializationCallbackReceiver
     {
         // Internal
+        // Only 'list' is serialized; Unity cannot serialize Dictionary<,> at all, so the
+        // lookups below are rebuilt from 'list' in OnAfterDeserialize. (Marking them
+        // [SerializeField] was always a no-op, and Unity 6000.6's serialization analyzer
+        // now rejects it outright: error UAC1016.)
         [SerializeField]
         private List<KeyValuePair> list = new List<KeyValuePair>();
-        [SerializeField, HideInInspector]
+        [NonSerialized]
         private Dictionary<TKey, int> indexByKey = new Dictionary<TKey, int>();
-        [SerializeField, HideInInspector]
+        [NonSerialized]
         private Dictionary<TKey, TValue> dict = new Dictionary<TKey, TValue>();
 
         #pragma warning disable 0414
